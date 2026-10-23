@@ -108,7 +108,11 @@ def main():
             if t > a.duration:
                 break
             cids = web_containers()
-            ready = [c for c in cids if health(c) == "healthy"]
+            status = {c: health(c) for c in cids}
+            ready = [c for c in cids if status[c] == "healthy"]
+            # Instancias ya arrancadas (sanas o saturadas). Una réplica saturada puede
+            # fallar el healthcheck, pero su CPU debe seguir contando para la decisión.
+            serving = [c for c in cids if status[c] in ("healthy", "unhealthy")]
             cores = {}
             for c in cids:
                 u = cgroup_usage_usec(c)
@@ -119,7 +123,7 @@ def main():
                         pu, pt = prev[c]
                         cores[c] = max(0.0, (u - pu) / 1e6 / (now - pt))
                     prev[c] = (u, now)
-            measured = [cores[c] for c in ready if c in cores]
+            measured = [cores[c] for c in serving if c in cores]
             util = (sum(measured) / len(measured) / a.cpus) if measured else 0.0
             used = sum(cores.values())
             n = len(cids)
@@ -127,14 +131,14 @@ def main():
 
             if a.mode == "elastic":
                 if util > a.scale_out_at and n < a.max and (now - last_out) >= a.scale_out_cooldown:
-                    base = max(len(ready), 1)
-                    want = min(a.max, max(n + 1, math.ceil(base * util / a.target)))
+                    # Regla tipo HPA: réplicas_deseadas = ceil(réplicas_actuales × util / objetivo)
+                    want = min(a.max, max(n + 1, math.ceil(n * util / a.target)))
                     desired = want
                     scale(want)
                     last_out = now
                     low_since = None
                     action = f"scale_out {n}->{want}"
-                elif util < a.scale_in_at and n > a.min and len(ready) == n:
+                elif util < a.scale_in_at and n > a.min and len(serving) == n:
                     low_since = low_since or now
                     if now - low_since >= a.scale_in_window:
                         want = max(a.min, min(n - 1, math.ceil(n * max(util, 0.01) / a.target)))
