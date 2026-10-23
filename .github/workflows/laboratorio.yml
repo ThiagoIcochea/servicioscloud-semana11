@@ -93,7 +93,7 @@ jobs:
   analisis:
     name: Análisis y gráficos
     needs: [calibracion, experimento]
-    if: ${{ !inputs.solo_calibracion }}
+    if: ${{ always() && needs.calibracion.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
