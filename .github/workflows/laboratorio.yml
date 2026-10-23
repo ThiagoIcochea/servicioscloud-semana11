@@ -1,0 +1,129 @@
+name: Laboratorio Escalabilidad y Elasticidad
+
+# Servicios Cloud (UTP) — Semana 11
+# Autor: Thiago Paolo Icochea Rodriguez (U22330428)
+#
+# Cada combinación patrón × estrategia corre en su propio runner efímero
+# (ubuntu-latest, 4 vCPU), que GitHub destruye al terminar: los recursos de
+# laboratorio quedan eliminados automáticamente.
+
+on:
+  workflow_dispatch:
+    inputs:
+      k:
+        description: "Capacidad de referencia K (sol/s de 1 réplica de 0,5 vCPU). Vacío = usar la calibración"
+        required: false
+        default: ""
+      solo_calibracion:
+        description: "Ejecutar solo la calibración"
+        type: boolean
+        default: false
+      publicar:
+        description: "Publicar resultados en la carpeta results/ del repositorio"
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: laboratorio
+  cancel-in-progress: false
+
+jobs:
+  calibracion:
+    name: Calibración (1 réplica × 0,5 vCPU)
+    runs-on: ubuntu-latest
+    outputs:
+      k: ${{ steps.k.outputs.k }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: grafana/setup-k6-action@v1
+      - name: Escalones de carga 10→80 sol/s
+        run: bash scripts/run_experiment.sh CALIB fijo 30 results/raw/CALIB_fijo
+      - name: Calcular K
+        id: k
+        run: |
+          pip install --quiet pandas
+          python3 analysis/calibrate.py results/raw/CALIB_fijo | tee results/raw/CALIB_fijo/calibration.txt
+          K="${{ inputs.k }}"
+          if [ -z "$K" ]; then K=$(grep '^K=' results/raw/CALIB_fijo/calibration.txt | cut -d= -f2); fi
+          echo "k=$K" >> "$GITHUB_OUTPUT"
+          echo "### Calibración: K = $K sol/s" >> "$GITHUB_STEP_SUMMARY"
+          cat results/raw/CALIB_fijo/calibration.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raw-CALIB_fijo
+          path: results/raw/CALIB_fijo
+
+  experimento:
+    name: ${{ matrix.patron }} · ${{ matrix.estrategia }}
+    needs: calibracion
+    if: ${{ !inputs.solo_calibracion }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        patron: [A, B, C, D]
+        estrategia: [fijo, vertical, horizontal, elastico]
+        include:
+          - patron: C
+            estrategia: programado
+    steps:
+      - uses: actions/checkout@v4
+      - uses: grafana/setup-k6-action@v1
+      - name: Info del runner
+        run: |
+          nproc; free -h; docker version --format '{{.Server.Version}}'
+          cat /sys/fs/cgroup/cgroup.controllers || true
+      - name: Ejecutar experimento
+        run: bash scripts/run_experiment.sh ${{ matrix.patron }} ${{ matrix.estrategia }} ${{ needs.calibracion.outputs.k }}
+      - name: Resumen
+        run: |
+          echo "### ${{ matrix.patron }} · ${{ matrix.estrategia }} (K=${{ needs.calibracion.outputs.k }})" >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          cat results/raw/${{ matrix.patron }}_${{ matrix.estrategia }}/autoscaler.log >> "$GITHUB_STEP_SUMMARY" || true
+          tail -n 40 results/raw/${{ matrix.patron }}_${{ matrix.estrategia }}/k6.log >> "$GITHUB_STEP_SUMMARY" || true
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: raw-${{ matrix.patron }}_${{ matrix.estrategia }}
+          path: results/raw/${{ matrix.patron }}_${{ matrix.estrategia }}
+
+  analisis:
+    name: Análisis y gráficos
+    needs: [calibracion, experimento]
+    if: ${{ !inputs.solo_calibracion }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas matplotlib
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: raw-*
+          path: dl
+      - name: Ordenar artefactos
+        run: |
+          mkdir -p results/raw
+          for d in dl/raw-*; do n=$(basename "$d"); rm -rf "results/raw/${n#raw-}"; mv "$d" "results/raw/${n#raw-}"; done
+          ls results/raw
+      - name: Analizar
+        run: |
+          python3 analysis/analyze.py results/raw results
+          cat results/resumen.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resultados-laboratorio
+          path: results
+      - name: Publicar resultados en el repositorio
+        if: ${{ inputs.publicar }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add results
+          git commit -m "Resultados del laboratorio (run ${{ github.run_number }}, K=${{ needs.calibracion.outputs.k }})" || exit 0
+          git pull --rebase origin ${{ github.ref_name }}
+          git push
