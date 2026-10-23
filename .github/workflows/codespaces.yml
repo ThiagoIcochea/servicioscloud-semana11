@@ -1,0 +1,32 @@
+name: Validar entorno Codespaces
+
+# Construye el mismo devcontainer que usa GitHub Codespaces y ejecuta dentro
+# una prueba de humo (Docker-in-Docker + k6 + experimento corto), para
+# garantizar que el laboratorio es reproducible desde un Codespace.
+# Autor: Thiago Paolo Icochea Rodriguez (U22330428)
+
+on:
+  workflow_dispatch:
+  push:
+    paths: [".devcontainer/**", ".github/workflows/codespaces.yml"]
+
+jobs:
+  devcontainer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construir devcontainer y ejecutar prueba de humo
+        uses: devcontainers/ci@v0.3
+        with:
+          push: never
+          runCmd: |
+            set -e
+            k6 version
+            docker version --format 'Docker {{.Server.Version}}'
+            python3 -c "import pandas, matplotlib; print('pandas', pandas.__version__)"
+            COMPOSE_PROJECT_NAME=shoplab docker compose up -d --build --scale web=2
+            for i in $(seq 1 40); do curl -fsS localhost:8080/api/checkout && break; sleep 1; done
+            echo
+            k6 run --quiet -e PATTERN=A -e K=5 --duration 15s load/patterns.js 2>&1 | tail -n 25
+            COMPOSE_PROJECT_NAME=shoplab docker compose down -v
+            echo "Devcontainer OK — Thiago Paolo Icochea Rodriguez (U22330428)"

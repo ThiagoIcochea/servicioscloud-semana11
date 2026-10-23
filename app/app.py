@@ -14,7 +14,7 @@ import time
 
 from flask import Flask, jsonify
 
-WORK_ITERATIONS = int(os.getenv("WORK_ITERATIONS", "12000"))
+WORK_ITERATIONS = int(os.getenv("WORK_ITERATIONS", "100000"))
 INSTANCE = socket.gethostname()
 STARTED = time.time()
 

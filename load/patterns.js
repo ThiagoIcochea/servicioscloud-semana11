@@ -41,9 +41,9 @@ const PATTERNS = {
       { target: r(0.4), duration: '110s' },
     ],
   },
-  // Calibración: escalones de 10 en 10 sol/s para hallar la saturación de 1 réplica
+  // Calibración: escalones de 5 en 5 sol/s para hallar la saturación de 1 réplica
   CALIB: {
-    start: 10, stages: [10, 20, 30, 40, 50, 60, 70, 80].flatMap((x) => [
+    start: 5, stages: [5, 10, 15, 20, 25, 30, 35, 40].flatMap((x) => [
       { target: x, duration: '2s' }, { target: x, duration: '18s' }]),
   },
 };

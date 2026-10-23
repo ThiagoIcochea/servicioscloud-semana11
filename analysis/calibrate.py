@@ -10,10 +10,10 @@ meta, k, cap = load_run(d)
 dur = k[k.metric_name == "http_req_duration"]
 fail = k[k.metric_name == "http_req_failed"]
 drop = k[k.metric_name == "dropped_iterations"]
-best = 10
+best = 5
 print("| Escalón (sol/s) | Servidas (sol/s) | p50 (ms) | p95 (ms) | Errores (%) | CPU (%) |")
 print("|---|---|---|---|---|---|")
-for i, rate in enumerate([10, 20, 30, 40, 50, 60, 70, 80]):
+for i, rate in enumerate([5, 10, 15, 20, 25, 30, 35, 40]):
     a, b = i * 20 + 4, i * 20 + 20  # se descartan los 4 s de transición
     d = dur[(dur.t >= a) & (dur.t < b)].metric_value
     f = fail[(fail.t >= a) & (fail.t < b)].metric_value.sum()

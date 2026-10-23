@@ -39,7 +39,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: grafana/setup-k6-action@v1
-      - name: Escalones de carga 10→80 sol/s
+      - name: Escalones de carga 5→40 sol/s
         run: bash scripts/run_experiment.sh CALIB fijo 30 results/raw/CALIB_fijo
       - name: Calcular K
         id: k
