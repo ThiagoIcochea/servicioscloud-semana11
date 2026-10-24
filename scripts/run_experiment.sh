@@ -10,6 +10,7 @@
 #   horizontal  4 réplicas × 0,5 vCPU = 2,0 vCPU        (scale out manual)
 #   elastico    1..6 réplicas × 0,5 vCPU, objetivo CPU 60 % (scale out/in automático)
 #   programado  1 réplica, pasa a 4 antes del pico previsto y vuelve a 1 (scheduled scaling)
+#   elastico_mejorado  2..6 réplicas, objetivo 50 %, sube >60 %, baja de a 1 réplica (propuesta del informe)
 set -euo pipefail
 
 PATTERN="${1:?patrón}"; STRATEGY="${2:?estrategia}"; K="${3:-30}"
@@ -24,6 +25,8 @@ case "$STRATEGY" in
   horizontal) REPLICAS=4 ;;
   elastico)   MODE=elastic; EXTRA="--min 1 --max 6 --target 0.60 --scale-out-at 0.70 --scale-in-at 0.35" ;;
   programado) MODE=scheduled; EXTRA="--schedule 66:4,200:1" ;;
+  elastico_mejorado) REPLICAS=2; MODE=elastic
+              EXTRA="--min 2 --max 6 --target 0.50 --scale-out-at 0.60 --scale-in-at 0.30 --scale-out-cooldown 10 --scale-in-window 45 --scale-in-step 1" ;;
   *) echo "estrategia desconocida: $STRATEGY"; exit 1 ;;
 esac
 

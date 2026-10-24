@@ -22,12 +22,13 @@ os.makedirs(FIG, exist_ok=True)
 SLO_P95_MS = 500      # objetivo de nivel de servicio: p95 < 500 ms
 SLO_ERR_PCT = 1.0     # y errores < 1 %
 PATTERNS = {"A": "Estable", "B": "Creciente", "C": "Pico previsible", "D": "Pico súbito"}
-STRATS = ["fijo", "vertical", "horizontal", "programado", "elastico"]
+STRATS = ["fijo", "vertical", "horizontal", "programado", "elastico", "elastico_mejorado"]
 LABEL = {"fijo": "Fija (1×0,5 vCPU)", "vertical": "Vertical (1×2,0 vCPU)",
          "horizontal": "Horizontal (4×0,5 vCPU)", "programado": "Programada (1→4→1)",
-         "elastico": "Elástica (1–6 réplicas, CPU 60 %)"}
+         "elastico": "Elástica (1–6 réplicas, CPU 60 %)",
+         "elastico_mejorado": "Elástica mejorada (2–6, CPU 50 %)"}
 COLOR = {"fijo": "#7a7a7a", "vertical": "#c2410c", "horizontal": "#2563eb",
-         "programado": "#9333ea", "elastico": "#059669"}
+         "programado": "#9333ea", "elastico": "#059669", "elastico_mejorado": "#0d9488"}
 FOOT = "Thiago Paolo Icochea Rodriguez · U22330428 · Servicios Cloud (UTP) · GitHub Actions ubuntu-latest"
 cal = os.path.join(RAW, "CALIB_fijo", "calibration.txt")
 
@@ -80,7 +81,7 @@ for (rep, p, s), (meta, k, cap, b) in sorted(runs.items()):
         eficiencia_pct=round(100 * used_min / vcpu_min) if vcpu_min else 0,
         cpu_ms_por_sol=round(1000 * used_min * 60 / served, 1) if served else None,
         cumplimiento_slo_pct=round(slo_ok), acciones=len(actions),
-        reaccion_s=first_scale_out_after(c, 60 if p == "D" else 80 if p == "C" else 0) if s == "elastico" else None,
+        reaccion_s=first_scale_out_after(c, 60 if p == "D" else 80 if p == "C" else 0) if s.startswith("elastico") else None,
         cpu_runner=meta.get("runner_cpu_model", ""),
     ))
 S = pd.DataFrame(summary)

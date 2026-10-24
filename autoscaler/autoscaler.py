@@ -81,6 +81,7 @@ def main():
     ap.add_argument("--scale-in-at", type=float, default=0.35)
     ap.add_argument("--scale-out-cooldown", type=float, default=15)
     ap.add_argument("--scale-in-window", type=float, default=30, help="ventana de estabilización para reducir")
+    ap.add_argument("--scale-in-step", type=int, default=99, help="máximo de réplicas retiradas por paso")
     # Política planificada: "80:4,190:1" => en t=80 s pasar a 4 réplicas, en t=190 s a 1
     ap.add_argument("--schedule", default="")
     a = ap.parse_args()
@@ -141,7 +142,7 @@ def main():
                 elif util < a.scale_in_at and n > a.min and len(serving) == n:
                     low_since = low_since or now
                     if now - low_since >= a.scale_in_window:
-                        want = max(a.min, min(n - 1, math.ceil(n * max(util, 0.01) / a.target)))
+                        want = max(a.min, n - a.scale_in_step, min(n - 1, math.ceil(n * max(util, 0.01) / a.target)))
                         desired = want
                         scale(want)
                         low_since = None

@@ -64,7 +64,7 @@ jobs:
     needs: calibracion
     if: ${{ !inputs.solo_calibracion }}
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     strategy:
       fail-fast: false
       matrix:
@@ -80,7 +80,7 @@ jobs:
         env:
           REP: ${{ matrix.rep }}
         run: |
-          ESTR="fijo vertical horizontal elastico"
+          ESTR="fijo vertical horizontal elastico elastico_mejorado"
           [ "${{ matrix.patron }}" = "C" ] && ESTR="$ESTR programado"
           for e in $ESTR; do
             bash scripts/run_experiment.sh ${{ matrix.patron }} $e ${{ needs.calibracion.outputs.k }} \
