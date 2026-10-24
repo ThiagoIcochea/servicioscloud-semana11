@@ -1,0 +1,4 @@
+{"pattern":"C","strategy":"programado","K":20,"replicas_initial":1,"cpus_per_replica":0.5,
+ "workers":2,"mode":"scheduled","extra":"--schedule 66:4,200:1","runner_cpus":4,
+ "runner_cpu_model":"AMD EPYC 7763 64-Core Processor","rep":"2",
+ "autor":"Thiago Paolo Icochea Rodriguez","codigo":"U22330428"}

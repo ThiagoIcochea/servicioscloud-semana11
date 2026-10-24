@@ -1,4 +1,0 @@
-t=  45.0s util= 0.72 scale_out 1->2
-t= 110.0s util= 0.77 scale_out 2->3
-t= 175.0s util= 0.72 scale_out 3->4
-t= 190.0s util= 0.74 scale_out 4->5
