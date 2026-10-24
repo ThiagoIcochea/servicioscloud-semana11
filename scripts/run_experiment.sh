@@ -56,6 +56,7 @@ docker compose logs --no-color > "$OUT/compose.log" 2>&1 || true
 cat > "$OUT/meta.json" <<EOF
 {"pattern":"$PATTERN","strategy":"$STRATEGY","K":$K,"replicas_initial":$REPLICAS,"cpus_per_replica":$CPUS,
  "workers":$WORKERS,"mode":"$MODE","extra":"$EXTRA","runner_cpus":$(nproc),
+ "runner_cpu_model":"$(lscpu | sed -n 's/^Model name: *//p' | head -1)","rep":"${REP:-1}",
  "autor":"Thiago Paolo Icochea Rodriguez","codigo":"U22330428"}
 EOF
 gzip -f "$OUT/k6.csv"

@@ -57,38 +57,44 @@ jobs:
           path: results/raw/CALIB_fijo
 
   experimento:
-    name: ${{ matrix.patron }} · ${{ matrix.estrategia }}
+    # Todas las estrategias de un patrón corren en el MISMO runner (mismo hardware),
+    # de modo que la comparación entre estrategias no se contamina por la
+    # variación de CPU entre runners. Cada patrón se repite 2 veces.
+    name: Patrón ${{ matrix.patron }} · repetición ${{ matrix.rep }}
     needs: calibracion
     if: ${{ !inputs.solo_calibracion }}
     runs-on: ubuntu-latest
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
         patron: [A, B, C, D]
-        estrategia: [fijo, vertical, horizontal, elastico]
-        include:
-          - patron: C
-            estrategia: programado
+        rep: [1, 2]
     steps:
       - uses: actions/checkout@v4
       - uses: grafana/setup-k6-action@v1
       - name: Info del runner
         run: |
-          nproc; free -h; docker version --format '{{.Server.Version}}'
-          cat /sys/fs/cgroup/cgroup.controllers || true
-      - name: Ejecutar experimento
-        run: bash scripts/run_experiment.sh ${{ matrix.patron }} ${{ matrix.estrategia }} ${{ needs.calibracion.outputs.k }}
-      - name: Resumen
+          nproc; free -h; lscpu | grep -E "Model name|^CPU\(s\)"; docker version --format '{{.Server.Version}}'
+      - name: Ejecutar estrategias
+        env:
+          REP: ${{ matrix.rep }}
         run: |
-          echo "### ${{ matrix.patron }} · ${{ matrix.estrategia }} (K=${{ needs.calibracion.outputs.k }})" >> "$GITHUB_STEP_SUMMARY"
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
-          cat results/raw/${{ matrix.patron }}_${{ matrix.estrategia }}/autoscaler.log >> "$GITHUB_STEP_SUMMARY" || true
-          tail -n 40 results/raw/${{ matrix.patron }}_${{ matrix.estrategia }}/k6.log >> "$GITHUB_STEP_SUMMARY" || true
-          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          ESTR="fijo vertical horizontal elastico"
+          [ "${{ matrix.patron }}" = "C" ] && ESTR="$ESTR programado"
+          for e in $ESTR; do
+            bash scripts/run_experiment.sh ${{ matrix.patron }} $e ${{ needs.calibracion.outputs.k }} \
+              results/raw/r${{ matrix.rep }}/${{ matrix.patron }}_$e
+            echo "### ${{ matrix.patron }} · $e · rep ${{ matrix.rep }}" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            cat results/raw/r${{ matrix.rep }}/${{ matrix.patron }}_$e/autoscaler.log >> "$GITHUB_STEP_SUMMARY" || true
+            grep -E "http_req_duration|http_req_failed|dropped" results/raw/r${{ matrix.rep }}/${{ matrix.patron }}_$e/k6.log >> "$GITHUB_STEP_SUMMARY" || true
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          done
       - uses: actions/upload-artifact@v4
         with:
-          name: raw-${{ matrix.patron }}_${{ matrix.estrategia }}
-          path: results/raw/${{ matrix.patron }}_${{ matrix.estrategia }}
+          name: raw-r${{ matrix.rep }}-${{ matrix.patron }}
+          path: results/raw/r${{ matrix.rep }}
 
   analisis:
     name: Análisis y gráficos
@@ -107,9 +113,10 @@ jobs:
           path: dl
       - name: Ordenar artefactos
         run: |
-          mkdir -p results/raw
-          for d in dl/raw-*; do n=$(basename "$d"); rm -rf "results/raw/${n#raw-}"; mv "$d" "results/raw/${n#raw-}"; done
-          ls results/raw
+          rm -rf results/raw && mkdir -p results/raw/r1 results/raw/r2
+          mv dl/raw-CALIB_fijo results/raw/CALIB_fijo
+          for d in dl/raw-r*; do n=$(basename "$d"); r=$(echo "$n" | cut -d- -f2); cp -r "$d"/. "results/raw/$r/"; done
+          ls -R results/raw | head -50
       - name: Analizar
         run: |
           python3 analysis/analyze.py results/raw results
