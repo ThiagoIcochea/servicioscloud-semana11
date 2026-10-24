@@ -1,0 +1,50 @@
+name: Reanalizar una corrida
+
+# Descarga los artefactos crudos de una corrida anterior del laboratorio y
+# regenera el análisis sin repetir los experimentos.
+# Autor: Thiago Paolo Icochea Rodriguez (U22330428)
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "ID de la corrida de 'Laboratorio Escalabilidad y Elasticidad'"
+        required: true
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  analisis:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas matplotlib
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: raw-*
+          path: dl
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Ordenar artefactos (solo el patrón propio de cada uno)
+        run: |
+          rm -rf results && mkdir -p results/raw/r1 results/raw/r2
+          cp -r dl/raw-CALIB_fijo results/raw/CALIB_fijo
+          for d in dl/raw-r*; do n=$(basename "$d"); r=$(echo "$n" | cut -d- -f2); p=$(echo "$n" | cut -d- -f3)
+            find "$d" -maxdepth 3 -type d -name "${p}_*" -exec cp -r {} "results/raw/$r/" \; ; done
+          for d in results/raw/r*/*; do echo "$d $(date -u -d @$(cut -d. -f1 $d/k6_start_epoch.txt) +%FT%TZ)"; done
+      - name: Analizar
+        run: |
+          python3 analysis/analyze.py results/raw results
+          cat results/resumen.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Publicar
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A results
+          git commit -m "Resultados reanalizados de la corrida ${{ inputs.run_id }}" || exit 0
+          git pull --rebase origin main && git push
