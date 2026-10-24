@@ -1,40 +1,13 @@
-lb-1  | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
-lb-1  | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
-lb-1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-lb-1  | 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
-lb-1  | 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
-lb-1  | /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
-lb-1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
-lb-1  | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
-lb-1  | /docker-entrypoint.sh: Configuration complete; ready for start up
-lb-1  | 2026/10/24 00:21:28 [error] 30#30: *124 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:28 [error] 30#30: *72 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:28 [error] 30#30: *206 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:30 [error] 30#30: *112 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:30 [error] 30#30: *122 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:30 [error] 30#30: *14 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:30 [error] 30#30: *190 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:30 [error] 30#30: *194 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:31 [error] 30#30: *72 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:31 [error] 30#30: *120 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:31 [error] 30#30: *62 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:31 [error] 30#30: *50 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.4:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:48 [error] 30#30: *36 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:50 [error] 30#30: *204 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:50 [error] 30#30: *260 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:50 [error] 30#30: *100 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:51 [error] 30#30: *284 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:51 [error] 30#30: *208 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:51 [error] 30#30: *46 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:51 [error] 30#30: *242 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:51 [error] 30#30: *300 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:53 [error] 30#30: *74 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:21:53 [error] 30#30: *186 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:22:01 [error] 30#30: *250 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:22:01 [error] 30#30: *50 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:22:02 [error] 30#30: *300 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-lb-1  | 2026/10/24 00:22:06 [error] 30#30: *90 upstream timed out (110: Operation timed out) while connecting to upstream, client: 172.18.0.1, server: , request: "GET /api/checkout HTTP/1.1", upstream: "http://172.18.0.5:8000/api/checkout", host: "localhost:8080"
-web-1  | [1b4e74bf7d15] arrancando, warm-up de 10s
-web-2  | [91b85cd57f0c] arrancando, warm-up de 10s
-web-4  | [fa94ea0ebd4c] arrancando, warm-up de 10s
-web-3  | [fef053a53d8a] arrancando, warm-up de 10s
+web-1  | [03b92ba97021] arrancando, warm-up de 10s
+web-3  | [ea815c48879a] arrancando, warm-up de 10s
+web-2  | [a2ec5f82df6d] arrancando, warm-up de 10s
+web-4  | [6c8fda17e2ff] arrancando, warm-up de 10s
+lb-1   | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+lb-1   | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+lb-1   | 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+lb-1   | 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+lb-1   | /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+lb-1   | /docker-entrypoint.sh: Configuration complete; ready for start up

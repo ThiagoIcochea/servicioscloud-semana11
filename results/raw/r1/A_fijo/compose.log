@@ -1,4 +1,4 @@
-web-1  | [1b98de1c3e72] arrancando, warm-up de 10s
+web-1  | [b8822768a871] arrancando, warm-up de 10s
 lb-1   | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
 lb-1   | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
 lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh

@@ -1,13 +1,13 @@
-web-2  | [1a77f5429e5b] arrancando, warm-up de 10s
-web-1  | [25ebb7a9c588] arrancando, warm-up de 10s
+web-4  | [4234ffec2254] arrancando, warm-up de 10s
+web-1  | [1cfd132dd60b] arrancando, warm-up de 10s
+web-2  | [8015ba7189a4] arrancando, warm-up de 10s
 lb-1   | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
 lb-1   | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
 lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
-web-3  | [688ffcefaf18] arrancando, warm-up de 10s
 lb-1   | 10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
 lb-1   | 10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
 lb-1   | /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
 lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
 lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
 lb-1   | /docker-entrypoint.sh: Configuration complete; ready for start up
-web-4  | [c8cb0349eb10] arrancando, warm-up de 10s
+web-3  | [77e4665ae488] arrancando, warm-up de 10s

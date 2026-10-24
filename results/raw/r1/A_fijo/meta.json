@@ -1,4 +1,4 @@
 {"pattern":"A","strategy":"fijo","K":20,"replicas_initial":1,"cpus_per_replica":0.5,
  "workers":2,"mode":"observe","extra":"","runner_cpus":4,
- "runner_cpu_model":"AMD EPYC 9V74 80-Core Processor","rep":"1",
+ "runner_cpu_model":"AMD EPYC 7763 64-Core Processor","rep":"1",
  "autor":"Thiago Paolo Icochea Rodriguez","codigo":"U22330428"}

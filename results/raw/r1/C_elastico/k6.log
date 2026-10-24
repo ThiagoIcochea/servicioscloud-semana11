@@ -3,34 +3,34 @@
   █ THRESHOLDS 
 
     http_req_duration
-    ✓ 'p(95)>=0' p(95)=2.96s
+    ✓ 'p(95)>=0' p(95)=2.35s
 
 
   █ TOTAL RESULTS 
 
-    checks_total.......: 8653   36.054073/s
-    checks_succeeded...: 98.75% 8545 out of 8653
-    checks_failed......: 1.24%  108 out of 8653
+    checks_total.......: 8674   36.141526/s
+    checks_succeeded...: 98.75% 8566 out of 8674
+    checks_failed......: 1.24%  108 out of 8674
 
     ✗ status 200
-      ↳  98% — ✓ 8545 / ✗ 108
+      ↳  98% — ✓ 8566 / ✗ 108
 
     HTTP
-    http_req_duration..............: avg=592.75ms min=1.25ms  med=36.63ms max=4.89s p(90)=2.56s p(95)=2.96s
-      { expected_response:true }...: avg=584.43ms min=19.11ms med=35.61ms max=4.89s p(90)=2.56s p(95)=2.96s
-    http_req_failed................: 1.24%  108 out of 8653
-    http_reqs......................: 8653   36.054073/s
+    http_req_duration..............: avg=318.6ms  min=12.76ms med=14.03ms max=3s p(90)=1.4s  p(95)=2.35s
+      { expected_response:true }...: avg=315.53ms min=12.76ms med=14.03ms max=3s p(90)=1.44s p(95)=2.35s
+    http_req_failed................: 1.24%  108 out of 8674
+    http_reqs......................: 8674   36.141526/s
 
     EXECUTION
-    dropped_iterations.............: 26     0.108333/s
-    iteration_duration.............: avg=592.88ms min=1.58ms  med=36.76ms max=4.89s p(90)=2.56s p(95)=2.96s
-    iterations.....................: 8653   36.054073/s
-    vus............................: 0      min=0           max=174
-    vus_max........................: 176    min=150         max=176
+    dropped_iterations.............: 5      0.020833/s
+    iteration_duration.............: avg=318.79ms min=12.95ms med=14.24ms max=3s p(90)=1.4s  p(95)=2.35s
+    iterations.....................: 8674   36.141526/s
+    vus............................: 0      min=0           max=145
+    vus_max........................: 155    min=150         max=155
 
     NETWORK
-    data_received..................: 1.9 MB 8.1 kB/s
-    data_sent......................: 710 kB 3.0 kB/s
+    data_received..................: 2.0 MB 8.1 kB/s
+    data_sent......................: 711 kB 3.0 kB/s
 
 
 

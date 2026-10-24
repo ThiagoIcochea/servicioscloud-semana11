@@ -1,2 +1,2 @@
-t=  70.0s util= 0.52 scheduled 1->4
-t= 200.0s util= 0.73 scheduled 4->1
+t=  70.0s util= 0.51 scheduled 1->4
+t= 200.0s util= 0.49 scheduled 4->1

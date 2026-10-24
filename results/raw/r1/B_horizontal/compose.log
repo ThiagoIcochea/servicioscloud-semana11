@@ -1,6 +1,6 @@
-web-1  | [3eeb3b834abe] arrancando, warm-up de 10s
-web-4  | [df2b0c741b26] arrancando, warm-up de 10s
-web-2  | [b888d62f79a1] arrancando, warm-up de 10s
+web-3  | [f8d7d9220825] arrancando, warm-up de 10s
+web-2  | [dd89921c9459] arrancando, warm-up de 10s
+web-4  | [39429b17df3b] arrancando, warm-up de 10s
 lb-1   | /docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
 lb-1   | /docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
 lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
@@ -10,4 +10,4 @@ lb-1   | /docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers
 lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
 lb-1   | /docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
 lb-1   | /docker-entrypoint.sh: Configuration complete; ready for start up
-web-3  | [85be825c62b1] arrancando, warm-up de 10s
+web-1  | [fe8ff8e75e2f] arrancando, warm-up de 10s
