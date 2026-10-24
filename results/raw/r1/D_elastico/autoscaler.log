@@ -1,4 +1,5 @@
-t=  65.0s util= 0.92 scale_out 1->2
-t=  80.0s util= 0.98 scale_out 2->4
-t=  95.0s util= 0.96 scale_out 4->6
-t= 160.0s util= 0.10 scale_in 6->1
+t=  65.0s util= 0.96 scale_out 1->2
+t=  80.0s util= 0.99 scale_out 2->4
+t=  95.0s util= 0.98 scale_out 4->6
+t= 165.0s util= 0.12 scale_in 6->2
+t= 200.0s util= 0.21 scale_in 2->1

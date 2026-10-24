@@ -1,0 +1,4 @@
+{"pattern":"C","strategy":"elastico_mejorado","K":20,"replicas_initial":2,"cpus_per_replica":0.5,
+ "workers":2,"mode":"elastic","extra":"--min 2 --max 6 --target 0.50 --scale-out-at 0.60 --scale-in-at 0.30 --scale-out-cooldown 10 --scale-in-window 45 --scale-in-step 1","runner_cpus":4,
+ "runner_cpu_model":"AMD EPYC 7763 64-Core Processor","rep":"2",
+ "autor":"Thiago Paolo Icochea Rodriguez","codigo":"U22330428"}

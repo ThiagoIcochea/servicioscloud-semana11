@@ -3,32 +3,34 @@
   █ THRESHOLDS 
 
     http_req_duration
-    ✓ 'p(95)>=0' p(95)=516.5ms
+    ✓ 'p(95)>=0' p(95)=3.55s
 
 
   █ TOTAL RESULTS 
 
-    checks_total.......: 7499    31.245761/s
-    checks_succeeded...: 100.00% 7499 out of 7499
-    checks_failed......: 0.00%   0 out of 7499
+    checks_total.......: 7361   30.670623/s
+    checks_succeeded...: 99.32% 7311 out of 7361
+    checks_failed......: 0.67%  50 out of 7361
 
-    ✓ status 200
+    ✗ status 200
+      ↳  99% — ✓ 7311 / ✗ 50
 
     HTTP
-    http_req_duration..............: avg=119.94ms min=14.76ms med=30.41ms max=1.01s p(90)=351.24ms p(95)=516.5ms 
-      { expected_response:true }...: avg=119.94ms min=14.76ms med=30.41ms max=1.01s p(90)=351.24ms p(95)=516.5ms 
-    http_req_failed................: 0.00%  0 out of 7499
-    http_reqs......................: 7499   31.245761/s
+    http_req_duration..............: avg=1.75s min=19.18ms med=1.69s max=4.49s p(90)=3.44s p(95)=3.55s
+      { expected_response:true }...: avg=1.76s min=19.18ms med=1.72s max=4.49s p(90)=3.44s p(95)=3.55s
+    http_req_failed................: 0.67%  50 out of 7361
+    http_reqs......................: 7361   30.670623/s
 
     EXECUTION
-    iteration_duration.............: avg=120.06ms min=14.84ms med=30.5ms  max=1.01s p(90)=351.33ms p(95)=516.61ms
-    iterations.....................: 7499   31.245761/s
-    vus............................: 0      min=0         max=25 
-    vus_max........................: 150    min=150       max=150
+    dropped_iterations.............: 138    0.574996/s
+    iteration_duration.............: avg=1.75s min=19.31ms med=1.69s max=4.49s p(90)=3.44s p(95)=3.55s
+    iterations.....................: 7361   30.670623/s
+    vus............................: 0      min=0          max=284
+    vus_max........................: 288    min=150        max=288
 
     NETWORK
-    data_received..................: 1.7 MB 7.0 kB/s
-    data_sent......................: 615 kB 2.6 kB/s
+    data_received..................: 1.7 MB 6.9 kB/s
+    data_sent......................: 604 kB 2.5 kB/s
 
 
 

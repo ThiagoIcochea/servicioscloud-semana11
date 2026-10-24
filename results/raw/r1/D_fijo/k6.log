@@ -1,34 +1,35 @@
+time="2026-10-24T00:40:36Z" level=warning msg="Request Failed" error="Get \"http://localhost:8080/api/checkout\": request timeout"
 
 
   █ THRESHOLDS 
 
     http_req_duration
-    ✓ 'p(95)>=0' p(95)=2.26s
+    ✓ 'p(95)>=0' p(95)=3.08s
 
 
   █ TOTAL RESULTS 
 
-    checks_total.......: 7499   31.245679/s
-    checks_succeeded...: 51.18% 3838 out of 7499
-    checks_failed......: 48.81% 3661 out of 7499
+    checks_total.......: 7499   31.24575/s
+    checks_succeeded...: 43.21% 3241 out of 7499
+    checks_failed......: 56.78% 4258 out of 7499
 
     ✗ status 200
-      ↳  51% — ✓ 3838 / ✗ 3661
+      ↳  43% — ✓ 3241 / ✗ 4258
 
     HTTP
-    http_req_duration..............: avg=1.08s min=14.95ms med=1s    max=2.29s p(90)=2.19s p(95)=2.26s
-      { expected_response:true }...: avg=1.17s min=14.95ms med=1.98s max=2.29s p(90)=2.26s p(95)=2.27s
-    http_req_failed................: 48.81% 3661 out of 7499
-    http_reqs......................: 7499   31.245679/s
+    http_req_duration..............: avg=784.86ms min=19.49ms med=300.52ms max=10s   p(90)=2.98s p(95)=3.08s
+      { expected_response:true }...: avg=1.41s    min=19.49ms med=486.54ms max=3.19s p(90)=3.08s p(95)=3.09s
+    http_req_failed................: 56.78% 4258 out of 7499
+    http_reqs......................: 7499   31.24575/s
 
     EXECUTION
-    iteration_duration.............: avg=1.08s min=15.07ms med=1s    max=2.29s p(90)=2.19s p(95)=2.26s
-    iterations.....................: 7499   31.245679/s
-    vus............................: 0      min=0            max=132
+    iteration_duration.............: avg=785.05ms min=19.63ms med=300.69ms max=10s   p(90)=2.98s p(95)=3.08s
+    iterations.....................: 7499   31.24575/s
+    vus............................: 0      min=0            max=91 
     vus_max........................: 150    min=150          max=150
 
     NETWORK
-    data_received..................: 2.1 MB 8.6 kB/s
+    data_received..................: 2.1 MB 8.9 kB/s
     data_sent......................: 615 kB 2.6 kB/s
 
 
